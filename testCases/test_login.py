@@ -1,4 +1,4 @@
-import pytest,logging
+import pytest
 from selenium import webdriver
 from pageObjects.LoginPage import LoginPage
 from utilities.readProperties import ReadConfig
@@ -10,32 +10,32 @@ class Test_001_Login:
     password = ReadConfig.getPassword()
     
     logs = LogGen.loggen()
-    logs.info('sssddd')
-    print(logs)
-
+    
     def test_log(self):
-        self.logs.info('***** Test_001_Login *****')
+        logs = LogGen.loggen()
+        print(self.logs)
+        self.logs.info("***** Test_001_Login *****")
 
-    '''
+    
     def test_homePageTitle(self,setup):
-        self.logger.info("***** Test_001_Login *****")
-        self.logger.info("***** Verifying Home Page title *****")
+        self.logs.info("***** Test_001_Login *****")
+        self.logs.info("***** Verifying Home Page title *****")
         self.driver = setup
         self.driver.get(self.baseURL)
         act_title = self.driver.title
         if act_title=="Your store. Login":
             assert True
-            self.logger.info("***** Home Page title test is passed *****")
+            self.logs.info("***** Home Page title test is passed *****")
             self.driver.close()
         else :
             self.driver.save_screenshot(".\\Screenshots\\"+"test_homePageTitle.png")
-            self.logger.error("***** Home Page title test is failed *****")
+            self.logs.error("***** Home Page title test is failed *****")
             self.driver.close()
             assert False
     
     def test_login(self,setup):
-        self.logger.info("***** Test_001_Login *****")
-        self.logger.info("***** Verifying Login test *****")
+        self.logs.info("***** Test_001_Login *****")
+        self.logs.info("***** Verifying Login test *****")
         self.driver = setup
         self.driver.get(self.baseURL)
         self.lp = LoginPage(self.driver)
@@ -46,11 +46,11 @@ class Test_001_Login:
         self.lp.clickLogout()
         if act_title=="Dashboard / nopCommerce administration":
             assert True
-            self.logger.info("***** Login test is passed *****")
+            self.logs.info("***** Login test is passed *****")
             self.driver.close()
         else:
             self.driver.save_screenshot(".\\Screenshots\\"+"test_login.png")
             self.driver.close()
             assert False
-            self.logger.error("***** Login test is failed *****")
-    '''
+            self.logs.error("***** Login test is failed *****")
+    

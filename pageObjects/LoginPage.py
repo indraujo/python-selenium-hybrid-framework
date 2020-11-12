@@ -5,7 +5,7 @@ class LoginPage:
     # Locators
     textbox_username_id = "Email"
     textbox_password_id = "Password"
-    button_login_xpath = "//body/div[6]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[3]/input[1]"
+    button_login_xpath = "//input[@class='button-1 login-button']"
     link_logout_linktext = "Logout"
 
     def __init__(self,driver):

@@ -13,6 +13,4 @@ class LogGen:
         return logger
 
 logs = LogGen.loggen()
-logs.info("xxx")
-logs.info("***** Test_001_Login *****")
-#print(x)
+logs.info("customlogger")
