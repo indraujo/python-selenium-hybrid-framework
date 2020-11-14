@@ -17,15 +17,15 @@ class AddCustomer:
     text_dateofbirth_id = "DateOfBirth"
     text_companyname_id = "Company"
     check_istaxempty_id = "IsTaxExempt"
-    text_newsletter_xpath = "/html/body/div[3]/div[3]/div/form/div[3]/div/nop-panels/nop-panel/div/div[2]/div[1]/div[9]/div[2]/div/div[1]"
-    lstitem_yoursn_xpath    = "/html[1]/body[1]/div[5]/div[1]/div[2]/ul[1]/li[1]"
-    lstitem_teststore_xpath = "/html[1]/body[1]/div[5]/div[1]/div[2]/ul[1]/li[2]"
-    textbox_customerrole_xpath = "//div[@class='k-multiselect-wrap k-floatwrap']"
-    listitem_administrators_xpath = "//option[contains(text(),'Administrators')]"
-    listitem_forummoderators_xpath = "//option[contains(text(),'Forum Moderators')]"
-    listitem_guest_xpath = "//option[contains(text(),'Guests')]"
-    listitem_registered_xpath = "//option[contains(text(),'Registered')]"
-    listitem_vendor_xpath = "//option[contains(text(),'Vendors')]"
+    textbox_newsletter_xpath = "//*[@id='customer-info']/div[2]/div[1]/div[9]/div[2]/div/div[1]/div"
+    lstitem_yoursn_xpath    = "//li[contains(text(),'Your store name')]"
+    lstitem_teststore_xpath = "//li[contains(text(),'Test store 2')]"
+    textbox_customerrole_xpath = "//*[@id='customer-info']/div[2]/div[1]/div[10]/div[2]/div/div[1]/div"
+    listitem_administrators_xpath = "//li[contains(text(),'Administrators')]"
+    listitem_forummoderators_xpath = "//li[contains(text(),'Forum Moderators')]"
+    listitem_guest_xpath = "//li[contains(text(),'Guests')]"
+    listitem_registered_xpath = "//li[contains(text(),'Registered')]"
+    listitem_vendor_xpath = "//li[contains(text(),'Vendors')]"
     drop_managevendor_id = "VendorId"
     check_active_id = "Active"
     text_admincomment_id = "AdminComment"
@@ -77,41 +77,55 @@ class AddCustomer:
         self.driver.find_element(By.ID,self.text_companyname_id).clear()
         self.driver.find_element(By.ID,self.text_companyname_id).send_keys(companyname)
 
-    def setistaxempty(self):
-        self.driver.find_element(By.ID,self.check_istaxempty_id).click()
+    def setistaxempty(self,istax):
+        if istax == "No":
+            pass
+        elif istax == "Yes":
+            self.driver.find_element(By.ID,self.check_istaxempty_id).click()
+        else:
+            pass
 
     def setnewsletter(self,newsletter):
-        self.driver.find_element(By.XPATH,self.text_newsletter_xpath).click()
-        if newsletter == "Your store name":
-            self.driver.find_element(By.XPATH,self.lstitem_yoursn_xpath).click()
-        elif newsletter =="Test store 2":
-            self.driver.find_element(By.XPATH,self.lstitem_teststore_xpath).click()
+        for news in newsletter:
+            self.driver.find_element(By.XPATH,self.textbox_newsletter_xpath).click()
+            time.sleep(2)
+            if news == "Your store name":
+                self.driver.find_element(By.XPATH,self.lstitem_yoursn_xpath).click()
+                time.sleep(2)
 
-    def setcustomerroles(self,role):
-        self.driver.find_element(By.XPATH,self.textbox_customerrole_xpath).click()
-        time.sleep(3)
-        if role == "Registered":
-            self.listitem = self.driver.find_element(By.XPATH,self.listitem_registered_xpath).click()
-        elif role == "Administrators":
-            self.listitem = self.driver.find_element(By.XPATH,self.listitem_administrators_xpath).click()
-        elif role == "Guest":
-            # Here user can be Registered(or) Guest only one
-            self.driver.find_element(By.XPATH,"//*[@id='SelectedCustomerRoleIds']/option[4]").click()
-            self.driver.find_element(By.XPATH,self.listitem_guest_xpath).click()
-        elif role== "Vendors":
-            self.listitem = self.driver.find_element(By.XPATH,self.listitem_vendor_xpath).click()
+            elif news =="Test store 2":
+                self.driver.find_element(By.XPATH,self.lstitem_teststore_xpath).click()
 
-        else:
-            self.listitem = self.driver.find_element(By.XPATH,self.listitem_guest_xpath).click()
-        time.sleep(3)
-        self.driver.execute_script("arguments[0].click();",self.listitem)
-
+    def setcustomerroles(self,roles):
+        for role in roles:
+            print(role)
+            
+            time.sleep(1)                       
+            self.driver.find_element(By.XPATH,self.textbox_customerrole_xpath).click()
+            time.sleep(2)
+            if role == "Registered":
+                pass # cz Registered is default
+                # self.listitem = self.driver.find_element(By.XPATH,self.listitem_registered_xpath).click()
+            elif role == "Administrators":
+                self.listitem = self.driver.find_element(By.XPATH,self.listitem_administrators_xpath).click()
+            elif role == "Guest":
+                # Here user can be Registered(or) Guest only one
+                self.driver.find_element(By.XPATH,"//*[@id='SelectedCustomerRoleIds']/option[4]").click()
+                self.driver.find_element(By.XPATH,self.listitem_guest_xpath).click()
+            elif role == "Vendors":
+                self.listitem = self.driver.find_element(By.XPATH,self.listitem_vendor_xpath).click()
+            elif role == "Forum Moderators":
+                self.listitem = self.driver.find_element(By.XPATH,self.listitem_forummoderators_xpath).click()
+            else:
+                self.listitem = self.driver.find_element(By.XPATH,self.listitem_guest_xpath).click()
+            #self.driver.execute_script("arguments[0].click();",self.listitem)
+            
     def setmanageofvendor(self,value):
         drp = Select(self.driver.find_element(By.ID,self.drop_managevendor_id))
-        dpr.select_by_visible_text(value)
-        
+        drp.select_by_visible_text(value)
+     
     def setactive(self,active):
-        if active == "N":
+        if active == "No":
             self.driver.find_element(By.ID,self.check_active_id)
         else:
             pass
